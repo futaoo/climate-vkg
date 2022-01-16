@@ -1,0 +1,35 @@
+[PrefixDeclaration]
+:		http://www.semanticweb.org/ivan/ontologies/2021/11/untitled-ontology-14/
+ca:		http://jresearch.ucd.ie/climate-kg/ont/ca/noaa/
+geo:		http://www.w3.org/2003/01/geo/wgs84_pos#
+owl:		http://www.w3.org/2002/07/owl#
+rdf:		http://www.w3.org/1999/02/22-rdf-syntax-ns#
+xml:		http://www.w3.org/XML/1998/namespace
+xsd:		http://www.w3.org/2001/XMLSchema#
+obda:		https://w3id.org/obda/vocabulary#
+rdfs:		http://www.w3.org/2000/01/rdf-schema#
+sosa:		http://www.w3.org/ns/sosa/
+time:		http://www.w3.org/2006/time#
+
+[MappingDeclaration] @collection [[
+mappingId	noaa-station
+target		ca:station/{id} a ca:Station ; rdfs:label {name}^^xsd:string ; geo:lat {latitude}^^xsd:float ; geo:long {longitude}^^xsd:float ; geo:alt {elevation}^^xsd:float . 
+source		select * from noaa.stations;
+
+mappingId	noaa-record
+target		ca:record/{id} a ca:TemporalRecord ; time:inXSDDate {date}^^xsd:date ; ca:recordedSimpleValue {val}^^xsd:float . 
+source		select * from noaa.records;
+
+mappingId	noaa-datatype
+target		ca:datatype/{id} a ca:DataType . 
+source		select * from noaa.datatypes;
+
+mappingId	made-record
+target		ca:station/{stationid} ca:madeRecord ca:record/{recordid} . 
+source		select * from noaa.made_record;
+
+mappingId	recorded-datatype
+target		ca:record/{recordid} ca:recordedDataType ca:datatype/{datatypeid} . 
+source		select * from noaa.recorded_datatype;
+]]
+
